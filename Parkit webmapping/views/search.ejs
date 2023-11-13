@@ -6,9 +6,7 @@
       name="viewport"
       content="initial-scale=1, maximum-scale=1, user-scalable=no"
     />
-    <title>
-      Parkit
-    </title>
+    <title>Parkit</title>
     <style>
       html,
       body,
@@ -22,7 +20,7 @@
       .esri-features__footer {
         display: none !important;
       }
-      calcite-action{
+      calcite-action {
         display: none !important;
       }
     </style>
@@ -47,7 +45,12 @@
         "esri/widgets/Search",
         "esri/rest/locator",
         "esri/core/reactiveUtils",
-        
+
+        "esri/rest/route",
+        "esri/rest/support/RouteParameters",
+        "esri/rest/support/FeatureSet",
+        "esri/config",
+        "esri/widgets/Expand",
       ], function (
         esriConfig,
         Map,
@@ -57,8 +60,17 @@
         Point,
         GraphicsLayer,
         PictureMarkerSymbol,
-        Graphic, geometryEngine, Search, locator, reactiveUtils,
-        
+        Graphic,
+        geometryEngine,
+        Search,
+        locator,
+        reactiveUtils,
+
+        route,
+        RouteParameters,
+        FeatureSet,
+        esriConfig,
+        Expand
       ) {
         esriConfig.apiKey =
           "AAPK1590f9746e0b49c59ec1353b1965c1ebGkX13PfPUQPoRL9UFi_FVES4xvqmKgrEv6vLGBq6yBDsoPlkS5uxlYf4p8hSvGCu";
@@ -74,8 +86,10 @@
           map: map,
           center: [-5.8148, 35.7884],
           zoom: 17,
-          espg : 4326
-
+          espg: 4326,
+          constraints: {
+            snapToZoom: false,
+          },
         });
 
         const search = new Search({
@@ -96,15 +110,14 @@
                 longitude: record.longitude,
                 latitude: record.latitude,
               });
-              var reserveText
-              if(record.reserve == 0){
-                reserveText = "Reservée"
-              }
-              else{
-                reserveText = "Non Reservée"
+              var reserveText;
+              if (record.reserve == 0) {
+                reserveText = "Reservée";
+              } else {
+                reserveText = "Non Reservée";
               }
               const popupTemplate = {
-                title : "Place numéro : " + record.num_point,
+                title: "Place numéro : " + record.num_point,
                 content: [
                   {
                     type: "text",
@@ -118,7 +131,6 @@
                     type: "text",
                     text: "Longitude : " + record.longitude,
                   },
-                  
                 ],
               };
 
@@ -173,15 +185,14 @@
                   longitude: record.longitude,
                   latitude: record.latitude,
                 });
-                var reserveText
-                if(record.reserve == 0){
-                  reserveText = "Reservée"
-                }
-                else{
-                  reserveText = "Non Reservée"
+                var reserveText;
+                if (record.reserve == 0) {
+                  reserveText = "Reservée";
+                } else {
+                  reserveText = "Non Reservée";
                 }
                 const popupTemplate = {
-                  title : "Place numéro : " + record.num_point,
+                  title: "Place numéro : " + record.num_point,
 
                   content: [
                     {
@@ -189,18 +200,16 @@
                       text: "occupation :" + reserveText,
                     },
                     ,
-                  {
-                    type: "text",
-                    text: "Latitude :" + record.latitude,
-                  },
-                  {
-                    type: "text",
-                    text: "Longitude :" + record.longitude,
-                  },
+                    {
+                      type: "text",
+                      text: "Latitude :" + record.latitude,
+                    },
+                    {
+                      type: "text",
+                      text: "Longitude :" + record.longitude,
+                    },
                   ],
                 };
-                
-                
 
                 const graphic = new Graphic({
                   geometry: point,
@@ -209,30 +218,29 @@
                   symbol: createSymbol(record),
                 });
 
-                              // Function to create a symbol based on an attribute value
-              function createSymbol(record) {
-                const colorAttribute = record.reserve;
+                // Function to create a symbol based on an attribute value
+                function createSymbol(record) {
+                  const colorAttribute = record.reserve;
 
-                // Define default symbol properties
-                const defaultSymbol = {
-                  type: "simple-marker",
-                  size: 8,
-                  outline: {
-                    color: [255, 255, 255],
-                    width: 1,
-                  },
-                };
+                  // Define default symbol properties
+                  const defaultSymbol = {
+                    type: "simple-marker",
+                    size: 8,
+                    outline: {
+                      color: [255, 255, 255],
+                      width: 1,
+                    },
+                  };
 
-                // Check the attribute value and set color accordingly
-                if (colorAttribute === 1) {
-                  defaultSymbol.color = [255, 0, 0]; // Red
-                } else {
-                  defaultSymbol.color = [0, 255, 0]; // Blue (default color)
+                  // Check the attribute value and set color accordingly
+                  if (colorAttribute === 1) {
+                    defaultSymbol.color = [255, 0, 0]; // Red
+                  } else {
+                    defaultSymbol.color = [0, 255, 0]; // Blue (default color)
+                  }
+
+                  return defaultSymbol;
                 }
-
-                return defaultSymbol;
-              }
-
 
                 graphicsLayer.add(graphic);
               });
@@ -243,13 +251,106 @@
         }
 
         setInterval(fetchAndRefreshPoints, 0.00005);
-        
 
+        const routeUrl =
+          "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+
+        view.on("click", (event) => {
+          if (view.graphics.length === 0) {
+            addGraphic("start", event.mapPoint);
+          } else if (view.graphics.length === 1) {
+            addGraphic("finish", event.mapPoint);
+            // Call the route service
+            getRoute();
+          } else {
+            view.graphics.removeAll();
+            view.ui.empty("bottom-right");
+            addGraphic("start", event.mapPoint);
+          }
+        });
+
+        function addGraphic(type, point) {
+          const graphic = new Graphic({
+            symbol: {
+              type: "simple-marker",
+              color: type === "start" ? "white" : "black",
+              size: "12px",
+            },
+            geometry: point,
+          });
+          view.graphics.add(graphic);
+        }
+
+        function getRoute() {
+          const routeParams = new RouteParameters({
+            stops: new FeatureSet({
+              features: view.graphics.toArray(),
+            }),
+            returnDirections: true,
+          });
+
+          route
+            .solve(routeUrl, routeParams)
+            .then((data) => {
+              showRoutes(data.routeResults);
+              showDirections(data.routeResults[0].directions.features);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
+          function showRoutes(routes) {
+            routes.forEach((result) => {
+              result.route.symbol = {
+                type: "simple-line",
+                color: [5, 150, 255],
+                width: 3,
+              };
+              view.graphics.add(result.route, 0);
+            });
+          }
+
+          function showDirections(directions) {
+            function showRouteDirections(directions) {
+              const directionsList = document.createElement("ol");
+              directions.forEach((result, i) => {
+                const direction = document.createElement("li");
+                direction.innerHTML =
+                  result.attributes.text +
+                  (result.attributes.length > 0
+                    ? " (" + result.attributes.length.toFixed(2) + " miles)"
+                    : "");
+                directionsList.appendChild(direction);
+              });
+              directionsElement.appendChild(directionsList);
+            }
+
+            const directionsElement = document.createElement("div");
+            directionsElement.innerHTML = "<h3>Directions</h3>";
+            directionsElement.classList =
+              "esri-widget esri-widget--panel esri-directions__scroller directions";
+            directionsElement.style.marginTop = "0";
+            directionsElement.style.padding = "0 15px";
+            directionsElement.style.minHeight = "365px";
+
+            showRouteDirections(directions);
+
+            view.ui.empty("bottom-right");
+            view.ui.add(
+              new Expand({
+                view: view,
+                content: directionsElement,
+                expanded: true,
+                mode: "floating",
+              }),
+              "bottom-right"
+            );
+          }
+        }
       });
     </script>
   </head>
   <body>
     <div id="viewDiv"></div>
-
   </body>
 </html>
