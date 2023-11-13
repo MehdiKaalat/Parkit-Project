@@ -102,76 +102,7 @@
         const graphicsLayer = new GraphicsLayer();
         map.add(graphicsLayer);
 
-        fetch("/getPoints")
-          .then((response) => response.json())
-          .then((data) => {
-            // Add each point to the map
-            data.forEach((record) => {
-              const point = new Point({
-                longitude: record.longitude,
-                latitude: record.latitude,
-              });
-              var reserveText;
-              if (record.reserve == 0) {
-                reserveText = "Reservée";
-              } else {
-                reserveText = "Non Reservée";
-              }
-              const popupTemplate = {
-                title: "Place numéro : " + record.num_point,
-                content: [
-                  {
-                    type: "text",
-                    text: "occupation : " + reserveText,
-                  },
-                  {
-                    type: "text",
-                    text: "Latitude : " + record.latitude,
-                  },
-                  {
-                    type: "text",
-                    text: "Longitude : " + record.longitude,
-                  },
-                ],
-              };
 
-              const graphic = new Graphic({
-                geometry: point,
-                attributes: record,
-                popupTemplate: popupTemplate,
-                symbol: createSymbol(record),
-              });
-
-              // Function to create a symbol based on an attribute value
-              function createSymbol(record) {
-                const colorAttribute = record.reserve;
-
-                // Define default symbol properties
-                const defaultSymbol = {
-                  type: "simple-marker",
-                  size: 8,
-                  outline: {
-                    color: [255, 255, 255],
-                    width: 1,
-                  },
-                };
-
-                // Check the attribute value and set color accordingly
-                if (colorAttribute === 1) {
-                  defaultSymbol.color = [255, 0, 0]; // Red
-                } else {
-                  defaultSymbol.color = [0, 255, 0]; // Blue (default color)
-                }
-
-                return defaultSymbol;
-              }
-
-              graphicsLayer.add(graphic);
-            });
-          })
-          .catch((error) =>
-            console.error("Error fetching points data:", error)
-          );
         // Function to fetch and update points
         function fetchAndRefreshPoints() {
           fetch("/getPoints")
@@ -250,8 +181,8 @@
               console.error("Error fetching points data:", error)
             );
         }
-
-        setInterval(fetchAndRefreshPoints, 0.00005);
+        fetchAndRefreshPoints()
+        setInterval(fetchAndRefreshPoints, 50);
 
         const routeUrl =
           "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
