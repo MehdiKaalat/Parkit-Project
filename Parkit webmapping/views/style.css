@@ -1,0 +1,704 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+a{ text-decoration: none;color: white;}
+li{ list-style: none;}
+.container{
+    margin: 0 auto;
+    width: 75%;
+    max-width: 1140px;
+}
+/*-----HEADER-----*/
+header{
+    height: 100vh;
+    width: 100%;
+    background-image: url(img/empty-underground-parking-garage.jpg);
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+}
+header::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.349);
+    z-index: -1;
+}
+nav{
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+    display: flex;
+    color: black;
+    z-index: 1;
+}
+nav .logo img{
+    width: 100px;
+}
+nav .subnav{
+    text-align: center;
+    
+}
+nav .navhome{
+    color: #0080C9;
+}
+nav .subnav li{
+    float: left;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+}
+nav .subnav li a{
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-weight: lighter;
+}
+nav .subnav ul {
+    display: none;
+}
+nav .subnav li:hover >ul{
+    display: block;
+}
+nav .subnav .children{
+    width: 170px;
+}
+nav .subnav .children li{
+    background-color: white;
+    text-align: left;
+    width: 200px;
+}
+nav .subnav .children .navborder {
+    border-top: 2px solid #0080C9;
+}
+nav .subnav .children li a{
+    color: black;
+    padding-left: 20px;
+    display: block;
+    font-size: 12px;
+}
+nav .subnav .children li a:hover{
+    color:  #0080C9;
+    background-color: rgb(243, 243, 243);
+}
+header .content{
+    display: flex;
+    justify-content: center;
+    height: 510px;
+    align-items: center;
+}
+header .content .content_child{
+    width: 100%;
+    text-align: center;
+}
+header .content h1 {
+    font-size: 60px;
+    color: white;
+}
+header .content h3{
+    font-weight: lighter;
+    color: #cacaca;
+    margin-bottom: 70px;
+}
+header .content a{
+    padding: 20px 40px;
+    background-color: #0080C9;
+    color: white;
+}
+header .content a:hover{
+    border: 2px solid white;
+    background: none;
+}
+/*-----ABOUT-----*/
+.about_child {
+    display: flex;
+    padding: 80px 0;
+    color: #4d4d4d;
+}
+.about_child .about_img{
+    width: 50%;
+}
+.about_child img{
+    width: 80%;
+    float: right;
+    border-radius: 10px;
+
+}
+.about_child .about_descrip{
+    width: 50%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.about_child .about_descrip h1{
+    text-transform: uppercase;
+    color: #0080C9;
+    font-size: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    position: relative;
+}
+.about_child .about_descrip h1::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 80px;
+    border-bottom: 4px solid #0080C9;
+}
+.about_child .about_descrip p{
+    font-weight: 300;
+    margin-bottom: 30px;
+    line-height: 27px;
+}
+.about_child .about_descrip .check li{
+    font-weight: 300;
+    font-size: medium;
+}
+.check li i{
+    margin-right: 10px;
+    color: #8bc34a;
+    margin-top: 20px;
+}
+/*-----Notre application-----*/
+#application{
+    background-color: rgb(243, 243, 243);
+    text-align: center;
+    color: #777;
+    padding-bottom: 50px;
+}
+#applcation h1{
+    margin-bottom: 0;
+}
+#application h1::before{
+    display: none;
+}
+#application .image {
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+#application .image img{
+    width: 200px;
+    margin-right: 25px;
+}
+/*-----HOW IT WORKS-----*/
+#works{
+    position: relative;
+    text-align: center ;
+    background-image: url(img/transport-concept-parked-vehicles.jpg);
+    z-index: 1;
+    background-size: cover;
+    background-attachment: fixed;
+}
+#works::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.692);
+    z-index: -1;
+}
+.title_section {
+    text-transform: uppercase;
+    font-size: 30px;
+    color: #0080C9;
+    padding-top: 70px;
+    margin-bottom: 40px;
+    position: relative;
+}
+.title_section::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 80px;
+    border-bottom: 4px solid #0080C9;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#works .works_childs{
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    padding-bottom: 70px;
+    line-height: 27px;
+    font-weight: 300;
+}
+#works .works_childs .child{
+    width: 30%;
+}
+#works .works_childs span{
+    width: 50px;
+    height: 50px;
+    background-color: #0080C9;
+    border-radius: 100%;
+    font-size: 20px;
+    margin-bottom: 40px;
+    display: inline-block;
+    text-align: center;
+    border: 4px solid white;
+    line-height: 44px;
+}
+#works .works_childs h3{
+    margin-bottom: 40px;
+}
+#works .works_childs p{
+    margin-bottom: 30px;
+}
+/*-----OUR TEAM-----*/
+#team{
+    text-align: center;
+}
+.team_info {
+    justify-content: space-between;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    color: #4d4d4d;
+    
+}
+.team_info .team_child {
+    width: 350px;
+    position: relative;
+    padding-bottom:70px ;
+}
+.team_info .team_child img{
+    width: 80%;
+    border-radius: 50%;
+    margin-bottom: 40px;
+}
+.team_info .team_child p{
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+.team_info .team_child h3{
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+.team_info .team_child h5{
+    font-weight: 300;
+    margin-bottom: 20px;
+    color: #ccc;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+.team_info .team_child ul{
+    display: flex;
+}
+.team_info .team_child ul i {
+    color: #777;
+    padding-right: 10px;
+    font-size: 25px;
+}
+.team_info .team_child ul i:hover{
+    color: #343a40;
+}
+/*-----OUR SERVICES-----*/
+#service{
+    background-color: rgb(243, 243, 243);
+    text-align: center;
+    color: #777;
+}
+#service h1{
+    margin-bottom: 0;
+}
+#service h1::before{
+    display: none;
+}
+.sous_title{
+    font-weight: 300;
+    position: relative;
+    margin-bottom: 40px;
+    color: #777;
+}
+.sous_title::before{
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    width: 80px;
+    border-bottom: 3px solid #0080C9;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#service .sevice_info{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+    padding-bottom: 70px;
+}
+#service .sevice_info .service_child{
+    width: 33%;
+    display: flex;
+    font-weight: 300;
+    margin-top: 40px;
+    padding-right: 60px;
+}
+#service .sevice_info .service_icon {
+    margin-right: 40px;
+    width: 40px;
+}
+#service .sevice_info .service_icon i{
+    font-size: 48px;
+    color: #0080C9;
+}
+#service .sevice_info .service_child_info h3{
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+#service .sevice_info .service_child_info p{
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+#service .sevice_info .service_child_info a{
+    color: #0080C9;
+}
+#service .sevice_info .service_child_info a:hover{
+    color: #0080C9;
+}
+/*-----INDUSTRIEs-----*/
+#indus{
+    text-align: center;
+}
+#indus h1{
+    margin-bottom: 0;
+}
+#indus h1::before{
+    display: none;
+}
+#indus .indus_img{
+    width: 100%;
+    display: flex;
+    margin-top: 60px;
+}
+#indus .indus_img .img_container{
+    width: 25%;
+    position: relative;
+}
+#indus .indus_img .img_container img{
+    width: 100%;
+    filter: brightness(75%);
+}
+#indus .indus_img .img_container .img_info{
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    color: white;
+    font-size: 25px;
+    width: 100%;
+}
+#indus .indus_img .img_container:hover .img_info{
+    opacity: 1;
+}
+#indus a{
+    color: black;
+}
+#indus a i{
+    padding: 20px;
+    font-size: 25px;
+}
+/*-----WATCH THE VIDEO-----*/
+#video{
+    background-image: url(img/parking.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 600px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    z-index: 1;
+    color: white;
+    position: relative;
+    background-attachment: fixed;
+}
+#video::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.349);
+    z-index: -1;
+}
+#video .video_content {
+    text-align: center;
+}
+#video i{
+    font-size: 80px;
+    margin-bottom: 30px;
+    border-radius: 50%;
+}
+#video i:hover{
+    background-color: #ffffff42;
+}
+#video span{
+    font-weight: 300;
+    font-size: 40px;
+    display: block;
+}
+/*-----TESTIMONIALS-----*/
+#testimonials {
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid rgb(231, 231, 231);
+}
+#testimonials .testi_content{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 70px;
+}
+#testimonials .testi_content .descrip{
+    width: 72%;
+    color:#4d4d4d;
+}
+#testimonials .testi_content .fleche{
+    position: relative;
+}
+#testimonials .testi_content .fleche i{
+    font-size: 50px;
+    color: #777;
+    vertical-align: middle;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+#testimonials .testi_content .fleche i:hover{
+    color: black;
+}
+#testimonials .testi_content .descrip p{
+    font-size: 25px;
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+#testimonials .testi_content .descrip span{
+    color: #777;
+}
+#testimonials .testi_content .descrip img{
+    width: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+/*-----CONTACT US-----*/
+#contact{
+    background-color: #f8f9fa;
+    text-align: center;
+    padding-bottom: 70px;
+}
+#contact h1{
+    margin-bottom: 0;
+}
+#contact h1:before{
+    display: none;
+}
+#contact .contact_info{
+    padding-top: 20px;
+    text-align: left;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+#contact .contact_info form{
+    width: 58%;
+    padding: 50px;
+    background-color: white;
+}
+#contact .contact_info form .full_name{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+#contact .contact_info form .full_name .name{
+    width: 48%;
+}
+#contact .contact_info form label {
+    display: block;
+    margin-bottom: 10px;
+}
+#contact form input, textarea{
+    border: 1px solid #ced4da;
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 15px;
+}
+#contact textarea{
+    margin-bottom: 25px;
+    resize: vertical
+}
+#contact .contact_info form .name input{
+    display: block;
+    width: 100%;
+    border: 1px solid #ced4da;
+}
+#contact form a{
+    background-color: #0080C9;
+    padding: 10px 30px;
+    letter-spacing: 2px;
+}
+#contact form a:hover{
+    background-color: #c74707;
+}
+
+#contact .contact_info .contact_descrip{
+    width: 39%;
+    font-weight: 300;
+}
+#contact .contact_info .contact_adress{
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+#contact .contact_info .contact_adress div{
+    margin-bottom: 20px;
+}
+#contact .contact_info .contact_adress h4{
+    color: #4d4d4d;
+    margin-bottom: 7px;
+}
+#contact .contact_info .contact_adress a{
+    color: #0080C9;
+}
+#contact .contact_info .contact_adress a:hover{
+    color: #c74707;
+}
+#contact .contact_info .more_info {
+    background-color: white;
+    padding: 20px;
+    padding-bottom: 30px;
+}
+#contact .contact_info .more_info h3{
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+#contact .contact_info .more_info p{
+    font-weight: 300;
+    line-height: 28px;
+    color: #4d4d4d;
+    margin-bottom: 20px;
+}
+#contact .contact_info .more_info a{
+    background-color: #0080C9;
+    padding: 10px 30px;
+    letter-spacing: 2px;
+}
+#contact .contact_info .more_info a:hover{
+    background-color: #c74707;
+}
+
+/* partenaire */
+#partenaire{
+    background-color: rgb(243, 243, 243);
+    text-align: center;
+    color: #777;
+}
+#partenaire h1{
+    margin-bottom: 0;
+}
+#partenaire h1::before{
+    display: none;
+}
+#partenaire .image{
+    width: 100%;
+    height: 100px;
+    margin-top: 60px;
+    padding-bottom: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#partenaire img{
+    width: 150px;
+}
+#partenaire .cih{
+    width: 170px;
+    height: 60px;
+}
+#partenaire .iam{
+    width: 150px;
+}
+/*-----FOOTER-----*/
+footer{
+    background-color: #333;
+    padding: 40px 0 30px ;
+}
+footer .footer_content{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #4d4d4d;
+    padding-bottom: 40px;
+}
+footer h4{
+    color: white;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+footer .footer_content .footer_about{
+    width: 29%;
+}
+footer .footer_content .footer_about p{
+    color: #777;
+    font-weight: 300;
+}
+footer .footer_content .footer_links a{
+    color: #777;
+    font-weight: 300;
+    line-height: 2;
+}
+footer .footer_content .footer_links a:hover{
+    color: white;
+}
+footer .footer_content .footer_follow ul{
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+}
+footer .footer_content .footer_follow ul i{
+    color: #777;
+}
+footer .footer_content .footer_follow ul i:hover{
+    color: white;
+}
+footer .footer_content .footer_newsletter form{
+    width: 100%;
+    height: 50px;
+    position: relative;
+}
+footer .footer_content .footer_newsletter .text {
+    width: 75%;
+    height: 100%;
+    padding: 15px 20px;
+    background-color: transparent;
+    border:0;
+    font-size: 15px;
+    border: 1px solid #777;
+}
+footer .footer_content .footer_newsletter form button{
+    height: 100%;
+    width: 24.9%;
+    background-color: #0080C9;
+    color: white;
+    font-size: 15px ;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border: 0;
+    margin-left: -4px;
+}
+footer .footer_content .footer_newsletter form button:hover{
+    background-color: #c74707;
+}
+footer .copyright{
+    color: #777;
+    text-align: center;
+    margin-top: 40px;
+}

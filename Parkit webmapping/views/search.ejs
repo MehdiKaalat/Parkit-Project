@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>
+      Parkit
+    </title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      /* Hide the selected feature icon in the popup */
+      .esri-features__footer {
+        display: none !important;
+      }
+      calcite-action{
+        display: none !important;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.28/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.28/"></script>
+    <script>
+      require([
+        "esri/config",
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/widgets/Search",
+        "esri/Graphic",
+        "esri/geometry/Point",
+        "esri/layers/GraphicsLayer",
+        "esri/symbols/PictureMarkerSymbol",
+        "esri/Graphic",
+        "esri/geometry/geometryEngine",
+        "esri/widgets/Search",
+        "esri/rest/locator",
+        "esri/core/reactiveUtils",
+        
+      ], function (
+        esriConfig,
+        Map,
+        MapView,
+        Search,
+        Graphic,
+        Point,
+        GraphicsLayer,
+        PictureMarkerSymbol,
+        Graphic, geometryEngine, Search, locator, reactiveUtils,
+        
+      ) {
+        esriConfig.apiKey =
+          "AAPK1590f9746e0b49c59ec1353b1965c1ebGkX13PfPUQPoRL9UFi_FVES4xvqmKgrEv6vLGBq6yBDsoPlkS5uxlYf4p8hSvGCu";
+
+        // Reference a feature layer to edit
+
+        const map = new Map({
+          basemap: "arcgis-navigation",
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-5.8148, 35.7884],
+          zoom: 17,
+          espg : 4326
+
+        });
+
+        const search = new Search({
+          view: view,
+        });
+
+        view.ui.add(search, "top-right");
+
+        const graphicsLayer = new GraphicsLayer();
+        map.add(graphicsLayer);
+
+        fetch("/getPoints")
+          .then((response) => response.json())
+          .then((data) => {
+            // Add each point to the map
+            data.forEach((record) => {
+              const point = new Point({
+                longitude: record.longitude,
+                latitude: record.latitude,
+              });
+              var reserveText
+              if(record.reserve == 0){
+                reserveText = "Reservée"
+              }
+              else{
+                reserveText = "Non Reservée"
+              }
+              const popupTemplate = {
+                title : "Place numéro : " + record.num_point,
+                content: [
+                  {
+                    type: "text",
+                    text: "occupation : " + reserveText,
+                  },
+                  {
+                    type: "text",
+                    text: "Latitude : " + record.latitude,
+                  },
+                  {
+                    type: "text",
+                    text: "Longitude : " + record.longitude,
+                  },
+                  
+                ],
+              };
+
+              const graphic = new Graphic({
+                geometry: point,
+                attributes: record,
+                popupTemplate: popupTemplate,
+                symbol: createSymbol(record),
+              });
+
+              // Function to create a symbol based on an attribute value
+              function createSymbol(record) {
+                const colorAttribute = record.reserve;
+
+                // Define default symbol properties
+                const defaultSymbol = {
+                  type: "simple-marker",
+                  size: 8,
+                  outline: {
+                    color: [255, 255, 255],
+                    width: 1,
+                  },
+                };
+
+                // Check the attribute value and set color accordingly
+                if (colorAttribute === 1) {
+                  defaultSymbol.color = [255, 0, 0]; // Red
+                } else {
+                  defaultSymbol.color = [0, 255, 0]; // Blue (default color)
+                }
+
+                return defaultSymbol;
+              }
+
+              graphicsLayer.add(graphic);
+            });
+          })
+          .catch((error) =>
+            console.error("Error fetching points data:", error)
+          );
+        // Function to fetch and update points
+        function fetchAndRefreshPoints() {
+          fetch("/getPoints")
+            .then((response) => response.json())
+            .then((data) => {
+              // Clear existing graphics
+              graphicsLayer.removeAll();
+
+              // Add each point to the map
+              data.forEach((record) => {
+                const point = new Point({
+                  longitude: record.longitude,
+                  latitude: record.latitude,
+                });
+                var reserveText
+                if(record.reserve == 0){
+                  reserveText = "Reservée"
+                }
+                else{
+                  reserveText = "Non Reservée"
+                }
+                const popupTemplate = {
+                  title : "Place numéro : " + record.num_point,
+
+                  content: [
+                    {
+                      type: "text",
+                      text: "occupation :" + reserveText,
+                    },
+                    ,
+                  {
+                    type: "text",
+                    text: "Latitude :" + record.latitude,
+                  },
+                  {
+                    type: "text",
+                    text: "Longitude :" + record.longitude,
+                  },
+                  ],
+                };
+                
+                
+
+                const graphic = new Graphic({
+                  geometry: point,
+                  attributes: record,
+                  popupTemplate: popupTemplate,
+                  symbol: createSymbol(record),
+                });
+
+                              // Function to create a symbol based on an attribute value
+              function createSymbol(record) {
+                const colorAttribute = record.reserve;
+
+                // Define default symbol properties
+                const defaultSymbol = {
+                  type: "simple-marker",
+                  size: 8,
+                  outline: {
+                    color: [255, 255, 255],
+                    width: 1,
+                  },
+                };
+
+                // Check the attribute value and set color accordingly
+                if (colorAttribute === 1) {
+                  defaultSymbol.color = [255, 0, 0]; // Red
+                } else {
+                  defaultSymbol.color = [0, 255, 0]; // Blue (default color)
+                }
+
+                return defaultSymbol;
+              }
+
+
+                graphicsLayer.add(graphic);
+              });
+            })
+            .catch((error) =>
+              console.error("Error fetching points data:", error)
+            );
+        }
+
+        setInterval(fetchAndRefreshPoints, 0.00005);
+        
+
+      });
+    </script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+
+  </body>
+</html>
